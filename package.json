@@ -1,0 +1,23 @@
+{
+  "name": "battle-city",
+  "version": "1.0.0",
+  "description": "Test if working 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "serve ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d-baranowski/battle-city-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/d-baranowski/battle-city-js/issues"
+  },
+  "homepage": "https://github.com/d-baranowski/battle-city-js#readme",
+  "devDependencies": {
+    "serve": "^11.3.1"
+  }
+}
