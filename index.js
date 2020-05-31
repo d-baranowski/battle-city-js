@@ -6,34 +6,35 @@ class Renderer {
         canvas.height = 680;
         canvas.width = 740;
         this.ctx = canvas.getContext("2d");
+        this.ctx.imageSmoothingEnabled= false;
         this.spriteSheet = new Image();
         this.spriteSheet.src = "sprites.png";
-        this.spriteWidth  = 400;
-        this.spriteHeight = 256;
     }
 
     render() {
+        this.drawMapTemplate();
+        this.drawTank();
+    }
+
+    drawMapTemplate() {
         this.ctx.fillStyle = "";
         this.ctx.fillRect(20, 20, 640, 640);
-        this.drawTank();
-        
     }
 
     drawTank() {
-        this.ctx.drawImage(this.spriteSheet,
-                          20,
-                          20,
-                          20,
-                          20,
-                          20,
-                          20,
-                          this.spriteWidth,
-                          this.spriteHeight);
+        this.spriteSheet.onload = () => {
+            this.ctx.drawImage(this.spriteSheet,
+                1,
+                3,
+                13,
+                12,
+                50,
+                50,
+                40,
+                40);
+        }
     }
-  
 }
-
-
 
 
 const renderer = new Renderer(canvas);
