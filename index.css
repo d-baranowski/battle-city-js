@@ -15,8 +15,6 @@ body {
   left: 0;
   right: 0;
   margin: auto;
-  width: 640px;
-  height: 640px;
   position: absolute;   /*  first parent that has "relative" will be referenced to   */
-  background-color: black;
+  background-color: #848284;
 }
