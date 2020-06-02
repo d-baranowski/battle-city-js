@@ -1,6 +1,6 @@
 class Tank {
-    readonly x: number;
-    readonly y: number;
+    public x: number;
+    public y: number;
 
     constructor() {
         this.x = 140;

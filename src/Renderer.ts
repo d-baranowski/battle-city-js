@@ -25,6 +25,8 @@ class Renderer {
     }
 
     drawMapTemplate() {
+        this.ctx.fillStyle = "#848284";
+        this.ctx.fillRect(0, 0, 680, 740);
         this.ctx.fillStyle = "black";
         this.ctx.fillRect(20, 20, 640, 640);
     }
