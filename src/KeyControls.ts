@@ -1,58 +1,63 @@
+import * as KeyCode from 'keycode-js';
+
+export interface KeyControlsBinding {
+   left: number
+   right: number
+   up: number
+   down: number
+   fire: number
+}
+
 class KeyControls {
-  keys: {};
+  keysPressed: {};
+  private readonly keyBinding: KeyControlsBinding
   
-  constructor() {
-    this.keys = {};
+  constructor(keyBinding: KeyControlsBinding) {
+    this.keysPressed = {};
+    this.keyBinding = keyBinding
 
     // Bind event handlers
     document.addEventListener("keydown", e => {
-      if ([37, 38, 39, 40, 32].indexOf(e.which) >= 0) {
+      if ([this.keyBinding.left, this.keyBinding.right, this.keyBinding.up, this.keyBinding.down, this.keyBinding.fire].indexOf(e.which) >= 0) {
         e.preventDefault();
       }
-      this.keys[e.which] = true;
+      if (e.which !== this.keyBinding.fire) {
+        this.reset();
+      }
+      this.keysPressed[e.which] = true;
     }, false);
 
     document.addEventListener("keyup", e => {
-      this.keys[e.which] = false;
+      this.keysPressed[e.which] = false;
     }, false);
   }
 
-  key(key, value) {
-    if (value !== undefined) {
-      this.keys[key] = value;
-    }
-    return this.keys[key];
-  }
-
   reset () {
-    for (let key in this.keys) {
-      this.keys[key] = false;
-    }
+    this.keysPressed[this.keyBinding.right] = false
+    this.keysPressed[this.keyBinding.left] = false
+    this.keysPressed[this.keyBinding.up] = false
+    this.keysPressed[this.keyBinding.down] = false
   }
 
   // Handle key actions
-  get action() {
-    return this.keys[32];
+  shouldFire():boolean {
+    return this.keysPressed[this.keyBinding.fire];
   }
 
-  get x() {
-    if (this.keys[37] || this.keys[65]) {
-      return -1;
-    }
-    if (this.keys[39] || this.keys[68]) {
-      return 1;
-    }
-    return 0;
+  shouldMoveLeft():boolean {
+    return this.keysPressed[this.keyBinding.left];
   }
 
-  get y() {
-    if (this.keys[38] || this.keys[87]) {
-      return -1;
-    }
-    if (this.keys[40] || this.keys[83]) {
-      return 1;
-    }
-    return 0;
+  shouldMoveRight():boolean {
+    return this.keysPressed[this.keyBinding.right];
+  }
+
+  shouldMoveUp():boolean {
+    return this.keysPressed[this.keyBinding.up];
+  }
+
+  shouldMoveDown():boolean {
+    return this.keysPressed[this.keyBinding.down];
   }
 }
 

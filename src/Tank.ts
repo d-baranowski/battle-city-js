@@ -1,10 +1,34 @@
+import TankController from "./TankController";
+
 class Tank {
     public x: number;
     public y: number;
+    private readonly tankController: TankController;
+    speed: number;
 
-    constructor() {
+    constructor(tankController: TankController, speed: number) {
+        this.tankController = tankController
+        this.speed = speed
+        
         this.x = 140;
         this.y = 50;
+    }
+
+    update(dt) {
+        if (this.tankController.shouldMoveUp()) {
+            this.y-= this.speed * dt;
+        }
+        
+        if (this.tankController.shouldMoveDown()) {
+            this.y+= this.speed * dt;
+        }
+        
+        if (this.tankController.shouldMoveRight()) {
+            this.x+= this.speed * dt;
+        }
+        if (this.tankController.shouldMoveLeft()) {
+            this.x-= this.speed * dt;
+        }
     }
 
     render(spriteSheet, ctx) {

@@ -26,5 +26,8 @@
     "typescript": "^3.9.3",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "keycode-js": "^3.0.0"
   }
 }

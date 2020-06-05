@@ -1,22 +1,20 @@
 import SpriteSheet from "./SpriteSheet";
 import Renderer from "./Renderer";
 import Tank from "./Tank";
-import KeyControls from "./KeyControls"
-
-
+import playerOneControls from "./playerOneDefaultControls";
+import KeyControls from "./KeyControls";
 
 
 async function init() {
     const spriteSheet = new SpriteSheet();
     const canvas = document.getElementById("canvas");
-    const controls = new KeyControls();
-    const tank = new Tank();
-
+    const controls = new KeyControls(playerOneControls);
+    
     const renderer = new Renderer(canvas, spriteSheet);
     await renderer.loaded();
 
     const speed = 200;
-    let p1 = new Tank();
+    let p1 = new Tank(controls, speed);
 
     p1.y = 400
 
@@ -28,21 +26,9 @@ async function init() {
         const t = ms / 1000; // Let's work in seconds
         dt = t - last;
         last = t;
+        
+        p1.update(dt)
 
-        // Game logic code
-        if (controls.x == 1) {
-            p1.x += speed * dt;  
-        }
-        if (controls.x == -1) {
-            p1.x -= speed * dt;  
-        }
-        if (controls.y == 1) {
-            p1.y += speed * dt;  
-        }
-        if (controls.y == -1) {
-            p1.y -= speed * dt;  
-        }
-            
         if (p1.x >= 640 - 20) p1.x = 640 - 20;
         if (p1.x <= 20)  p1.x = 20;
         if (p1.y >= 640 - 20) p1.y = 640 - 20;
