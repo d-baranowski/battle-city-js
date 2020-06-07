@@ -1,3 +1,5 @@
+import getTankSpriteSheets, { ITankSpriteSheet } from "./TankSpriteSheet";
+
 const sleep = async function (msec) {
     return new Promise(resolve => setTimeout(resolve, msec));
 };
@@ -5,6 +7,7 @@ const sleep = async function (msec) {
 class SpriteSheet {
     private ready: boolean = false;
     private readonly image: HTMLImageElement;
+    public yellowTank: ITankSpriteSheet[];
 
     constructor() {
         this.ready = false;
@@ -12,8 +15,8 @@ class SpriteSheet {
         this.image.onload = () => {
             this.ready = true;
         };
-
         this.image.src = "public/sprites.png";
+        this.yellowTank = getTankSpriteSheets(this, 'yellow')
     }
 
     async waitToBeReady(count = 0): Promise<boolean> {

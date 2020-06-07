@@ -1,5 +1,13 @@
 import SpriteSheet from "./SpriteSheet";
 
+
+export interface IDrawIntent {
+    x: number
+    y: number
+    width: number
+    height: number
+    ctx: CanvasRenderingContext2D 
+}
 class Renderer {
     private readonly ctx: CanvasRenderingContext2D;
     private readonly spriteSheet: SpriteSheet;
