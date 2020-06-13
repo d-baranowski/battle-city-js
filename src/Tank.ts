@@ -4,43 +4,53 @@ import SpriteSheet from "./SpriteSheet";
 class Tank {
     public x: number;
     public y: number;
-    private level: number;
+    private readonly level: number;
     private orientation: string;
     private readonly tankController: TankController;
+    private stateIndex = 0;
     speed: number;
 
     constructor(tankController: TankController, speed: number) {
-        this.tankController = tankController
-        this.speed = speed
-        this.orientation = 'up'
-        this.level = 0
+        this.tankController = tankController;
+        this.speed = speed;
+        this.orientation = 'up';
+        this.level = 0;
         this.x = 140;
         this.y = 50;
     }
 
     update(dt) {
+        if (
+            this.tankController.shouldMoveUp() ||
+            this.tankController.shouldMoveDown() ||
+            this.tankController.shouldMoveRight() ||
+            this.tankController.shouldMoveLeft()
+        ) {
+            this.stateIndex = (this.stateIndex + 1) % 20
+        }
+
         if (this.tankController.shouldMoveUp()) {
-            this.orientation = 'up'
+            this.orientation = 'up';
             this.y -= this.speed * dt;
         }
 
         if (this.tankController.shouldMoveDown()) {
-            this.orientation = 'down'
+            this.orientation = 'down';
             this.y += this.speed * dt;
         }
 
         if (this.tankController.shouldMoveRight()) {
-            this.orientation = 'right'
+            this.orientation = 'right';
             this.x += this.speed * dt;
         }
         if (this.tankController.shouldMoveLeft()) {
-            this.orientation = 'left'
+            this.orientation = 'left';
             this.x -= this.speed * dt;
         }
     }
 
     render(spriteSheet: SpriteSheet, ctx) {
-        spriteSheet.yellowTank[this.level][this.orientation].s0.draw({
+        spriteSheet.yellowTank[this.level][this.orientation][this.stateIndex > 10 ? "s0" : "s1"].draw({
             x: this.x,
             y: this.y,
             width: 40,

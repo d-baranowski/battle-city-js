@@ -1,64 +1,62 @@
-import * as KeyCode from 'keycode-js';
-
 export interface KeyControlsBinding {
-   left: number
-   right: number
-   up: number
-   down: number
-   fire: number
+    left: string
+    right: string
+    up: string
+    down: string
+    fire: string
 }
 
 class KeyControls {
-  keysPressed: {};
-  private readonly keyBinding: KeyControlsBinding
-  
-  constructor(keyBinding: KeyControlsBinding) {
-    this.keysPressed = {};
-    this.keyBinding = keyBinding
+    keysPressed: {};
+    private readonly keyBinding: KeyControlsBinding;
 
-    // Bind event handlers
-    document.addEventListener("keydown", e => {
-      if ([this.keyBinding.left, this.keyBinding.right, this.keyBinding.up, this.keyBinding.down, this.keyBinding.fire].indexOf(e.which) >= 0) {
-        e.preventDefault();
-      }
-      if (e.which !== this.keyBinding.fire) {
-        this.reset();
-      }
-      this.keysPressed[e.which] = true;
-    }, false);
+    constructor(keyBinding: KeyControlsBinding) {
+        this.keysPressed = {};
+        this.keyBinding = keyBinding;
 
-    document.addEventListener("keyup", e => {
-      this.keysPressed[e.which] = false;
-    }, false);
-  }
+        // Bind event handlers
+        document.addEventListener("keydown", e => {
+            if ([this.keyBinding.left, this.keyBinding.right, this.keyBinding.up, this.keyBinding.down, this.keyBinding.fire].indexOf(e.code) >= 0) {
+                e.preventDefault();
+            }
+            if (e.code !== this.keyBinding.fire) {
+                this.reset();
+            }
+            this.keysPressed[e.code] = true;
+        }, false);
 
-  reset () {
-    this.keysPressed[this.keyBinding.right] = false
-    this.keysPressed[this.keyBinding.left] = false
-    this.keysPressed[this.keyBinding.up] = false
-    this.keysPressed[this.keyBinding.down] = false
-  }
+        document.addEventListener("keyup", e => {
+            this.keysPressed[e.code] = false;
+        }, false);
+    }
 
-  // Handle key actions
-  shouldFire():boolean {
-    return this.keysPressed[this.keyBinding.fire];
-  }
+    reset() {
+        this.keysPressed[this.keyBinding.right] = false;
+        this.keysPressed[this.keyBinding.left] = false;
+        this.keysPressed[this.keyBinding.up] = false;
+        this.keysPressed[this.keyBinding.down] = false
+    }
 
-  shouldMoveLeft():boolean {
-    return this.keysPressed[this.keyBinding.left];
-  }
+    // Handle key actions
+    shouldFire(): boolean {
+        return this.keysPressed[this.keyBinding.fire];
+    }
 
-  shouldMoveRight():boolean {
-    return this.keysPressed[this.keyBinding.right];
-  }
+    shouldMoveLeft(): boolean {
+        return this.keysPressed[this.keyBinding.left];
+    }
 
-  shouldMoveUp():boolean {
-    return this.keysPressed[this.keyBinding.up];
-  }
+    shouldMoveRight(): boolean {
+        return this.keysPressed[this.keyBinding.right];
+    }
 
-  shouldMoveDown():boolean {
-    return this.keysPressed[this.keyBinding.down];
-  }
+    shouldMoveUp(): boolean {
+        return this.keysPressed[this.keyBinding.up];
+    }
+
+    shouldMoveDown(): boolean {
+        return this.keysPressed[this.keyBinding.down];
+    }
 }
 
 export default KeyControls

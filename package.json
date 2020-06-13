@@ -28,6 +28,5 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "keycode-js": "^3.0.0"
   }
 }
