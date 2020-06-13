@@ -1,4 +1,4 @@
-import SpriteSheet from "./SpriteSheet";
+import SpriteSheet from "./sprite/SpriteSheet";
 
 
 export interface IDrawIntent {
@@ -6,7 +6,7 @@ export interface IDrawIntent {
     y: number
     width: number
     height: number
-    ctx: CanvasRenderingContext2D 
+    ctx: CanvasRenderingContext2D
 }
 class Renderer {
     private readonly ctx: CanvasRenderingContext2D;

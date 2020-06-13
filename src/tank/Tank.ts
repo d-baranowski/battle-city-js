@@ -1,13 +1,15 @@
-import TankController from "./TankController";
-import SpriteSheet from "./SpriteSheet";
+import TankController from "../controller/TankController";
+import SpriteSheet from "../sprite/SpriteSheet";
+import IGameObject from "../IGameObject";
 
-class Tank {
+class Tank implements IGameObject {
     public x: number;
     public y: number;
     private readonly level: number;
     private orientation: string;
     private readonly tankController: TankController;
     private stateIndex = 0;
+    public destroyed = false;
     speed: number;
 
     constructor(tankController: TankController, speed: number) {

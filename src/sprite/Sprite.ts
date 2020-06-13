@@ -1,5 +1,5 @@
 import SpriteSheet from "./SpriteSheet";
-import { IDrawIntent } from "./Renderer";
+import { IDrawIntent } from "../Renderer";
 
 
 interface IProps {
@@ -10,18 +10,18 @@ interface IProps {
 }
 
 class Sprite {
-  spriteSheet: SpriteSheet
-  
-  sourceXOffset: number
-  sourceYOffset: number
-  sourceWidth: number
-  sourceHeight: number
+  spriteSheet: SpriteSheet;
+
+  sourceXOffset: number;
+  sourceYOffset: number;
+  sourceWidth: number;
+  sourceHeight: number;
 
   constructor(spriteSheet: SpriteSheet, props: IProps) {
-    this.spriteSheet = spriteSheet
-    this.sourceXOffset = props.sourceXOffset
-    this.sourceYOffset = props.sourceYOffset
-    this.sourceWidth = props.sourceWidth
+    this.spriteSheet = spriteSheet;
+    this.sourceXOffset = props.sourceXOffset;
+    this.sourceYOffset = props.sourceYOffset;
+    this.sourceWidth = props.sourceWidth;
     this.sourceHeight = props.sourceHeight
   }
 
@@ -35,7 +35,7 @@ class Sprite {
       props.y,
       props.width,
       props.height
-    )  
+    )
   }
 }
 

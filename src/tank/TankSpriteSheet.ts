@@ -1,5 +1,5 @@
-import Sprite from "./Sprite";
-import SpriteSheet from "./SpriteSheet";
+import Sprite from "../sprite/Sprite";
+import SpriteSheet from "../sprite/SpriteSheet";
 
 export interface ITankSpriteSheet {
   left: { s0: Sprite, s1: Sprite }
@@ -18,14 +18,14 @@ function getTankSpriteSheets(spriteSheet: SpriteSheet, tankType: String): ITankS
   const right_s0 = new Sprite(spriteSheet, { sourceXOffset:  97, sourceYOffset: 1, sourceWidth: 13, sourceHeight: 13 });
   const right_s1 = new Sprite(spriteSheet, { sourceXOffset: 113, sourceYOffset: 1, sourceWidth: 13, sourceHeight: 13 });
 
-  const foo = {
+  const yellowLevelO = {
     left: { s0: left_s0, s1: left_s1 },
     right: { s0: right_s0, s1: right_s1 },
     up: { s0: up_s0, s1: up_s1 },
     down: { s0: down_s0, s1: down_s1 }
-  }
+  };
 
-  return [foo]
+  return [yellowLevelO]
 
 }
 
