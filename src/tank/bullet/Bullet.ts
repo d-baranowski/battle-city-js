@@ -20,9 +20,9 @@ class Bullet implements IGameObject {
     render(spriteSheet: SpriteSheet, ctx: CanvasRenderingContext2D) {
         let intent: IDrawIntent;
         if (this.orientation == Orientation.Up || this.orientation === Orientation.Down) {
-            intent = {ctx: ctx, height: 12, width: 9, x: this.x, y: this.y};
+            intent = {ctx: ctx, height: 9, width: 6, x: this.x, y: this.y};
         } else {
-            intent = {ctx: ctx, height: 9, width: 12, x: this.x, y: this.y};
+            intent = {ctx: ctx, height: 6, width: 9, x: this.x, y: this.y};
         }
         spriteSheet.bullet[this.orientation].draw(intent)
     }
