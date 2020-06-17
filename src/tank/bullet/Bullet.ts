@@ -2,6 +2,7 @@ import IGameObject from "../../IGameObject";
 import SpriteSheet from "../../sprite/SpriteSheet";
 import Orientation from "../../Orientation";
 import {IDrawIntent} from "../../Renderer";
+import ObjectPool from "../../ObjectPool";
 
 class Bullet implements IGameObject {
     public destroyed = false;
@@ -9,7 +10,8 @@ class Bullet implements IGameObject {
     private readonly orientation: Orientation;
     private x: number;
     private y: number;
-
+    public readonly zIndex = 1;
+  
     constructor(x: number, y: number, speed: number, orientation: Orientation) {
         this.speed = speed;
         this.orientation = orientation;
@@ -28,6 +30,21 @@ class Bullet implements IGameObject {
     }
 
     update(dt: number) {
+        if (this.orientation == Orientation.Up) {
+            this.y -= dt * this.speed 
+        }
+        if (this.orientation == Orientation.Down) {
+            this.y += dt * this.speed 
+        }
+        if (this.orientation == Orientation.Left) {
+            this.x -= dt * this.speed 
+        }
+        if (this.orientation == Orientation.Right) {
+            this.x += dt * this.speed 
+        }
+    }
+
+    setObjectPool(objectPool: ObjectPool) {
     }
 }
 
