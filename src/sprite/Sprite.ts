@@ -25,16 +25,16 @@ class Sprite {
     this.sourceHeight = props.sourceHeight
   }
 
-  draw(props: IDrawIntent) {
-    props.ctx.drawImage(this.spriteSheet.getImage(),
+  draw(drawIntent: IDrawIntent) {
+    drawIntent.ctx.drawImage(this.spriteSheet.getImage(),
       this.sourceXOffset,
       this.sourceYOffset,
       this.sourceWidth,
       this.sourceHeight,
-      props.x,
-      props.y,
-      props.width,
-      props.height
+      drawIntent.x,
+      drawIntent.y,
+      drawIntent.width,
+      drawIntent.height
     )
   }
 }

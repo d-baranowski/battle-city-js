@@ -1,3 +1,4 @@
+import Board from "./Board";
 import SpriteSheet from "./sprite/SpriteSheet";
 import Renderer from "./Renderer";
 import Tank from "./tank/Tank";
@@ -6,6 +7,9 @@ import KeyControls from "./controller/KeyControls";
 import Bullet from "./tank/bullet/Bullet";
 import Orientation from "./Orientation";
 import ObjectPool from "./ObjectPool";
+import Collider from "./collider";
+
+
 
 
 async function init() {
@@ -19,12 +23,16 @@ async function init() {
     const randomBulletR = new Bullet(230, 330, 10, Orientation.Right);
     const randomBulletU = new Bullet(260, 330, 10, Orientation.Down);
     const randomBulletD = new Bullet(280, 330, 10, Orientation.Up);
-
-    const renderer = new Renderer(canvas, spriteSheet);
+    
+    const board = new Board(800, 640)
+    
+    const renderer = new Renderer(canvas, spriteSheet, board);
     await renderer.loaded();
 
+    const collider = new Collider(board, objectPool)
+
     const speed = 100;
-    objectPool.addObject(new Tank(150, 400, controls, speed));
+    objectPool.addObject(new Tank(150, 400, controls, speed, 42, 42)); 
 
     let dt = 0;
     let last = 0;
@@ -34,15 +42,14 @@ async function init() {
         const t = ms / 1000; // Let's work in seconds
         dt = t - last;
         last = t;
-
+        
+        collider.resolveCollisions()
         objectPool.getObjects().forEach(o => o.update(dt));
-
-        // if (p1.x >= 640 - 20) p1.x = 640 - 20;
-        // if (p1.x <= 20)  p1.x = 20;
-        // if (p1.y >= 640 - 20) p1.y = 640 - 20;
-        // if (p1.y <= 20)  p1.y = 20;
-
+        
+        
         renderer.render(objectPool.getObjects())
+        
+        
 
     }
     requestAnimationFrame(loopy);

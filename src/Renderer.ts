@@ -1,4 +1,6 @@
 import SpriteSheet from "./sprite/SpriteSheet";
+import Board from "./Board";
+
 
 
 export interface IDrawIntent {
@@ -11,11 +13,13 @@ export interface IDrawIntent {
 class Renderer {
     private readonly ctx: CanvasRenderingContext2D;
     private readonly spriteSheet: SpriteSheet;
+    private readonly board: Board;
 
-    constructor(canvas, spriteSheet: SpriteSheet) {
+    constructor(canvas, spriteSheet: SpriteSheet, board: Board) {
+        this.board = board;
         this.spriteSheet = spriteSheet;
-        canvas.height = 680;
-        canvas.width = 740;
+        canvas.height = board.getCanvasHeight();
+        canvas.width = board.getCanvasWidth();
         this.ctx = canvas.getContext("2d");
         this.ctx.imageSmoothingEnabled = false;
 
@@ -26,17 +30,10 @@ class Renderer {
     }
 
     render(objects) {
-        this.drawMapTemplate();
+        this.board.draw(this.ctx)
         objects.forEach(obj => {
             obj.render(this.spriteSheet, this.ctx)
         })
-    }
-
-    drawMapTemplate() {
-        this.ctx.fillStyle = "#848284";
-        this.ctx.fillRect(0, 0, 680, 740);
-        this.ctx.fillStyle = "black";
-        this.ctx.fillRect(20, 20, 640, 640);
     }
 }
 
