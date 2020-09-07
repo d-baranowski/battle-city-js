@@ -8,8 +8,11 @@ class Bullet implements IGameObject {
     public destroyed = false;
     private speed: number;
     private readonly orientation: Orientation;
-    private x: number;
-    private y: number;
+    public x: number;
+    public y: number;
+    public width: number;
+    public height: number;
+    
     public readonly zIndex = 1;
   
     constructor(x: number, y: number, speed: number, orientation: Orientation) {
@@ -17,15 +20,17 @@ class Bullet implements IGameObject {
         this.orientation = orientation;
         this.x = x;
         this.y = y;
+        if (this.orientation == Orientation.Up || this.orientation === Orientation.Down) {
+            this.width = 6
+            this.height = 9
+        } else {
+            this.width = 9
+            this.height = 6
+        }
     }
 
     render(spriteSheet: SpriteSheet, ctx: CanvasRenderingContext2D) {
-        let intent: IDrawIntent;
-        if (this.orientation == Orientation.Up || this.orientation === Orientation.Down) {
-            intent = {ctx: ctx, height: 9, width: 6, x: this.x, y: this.y};
-        } else {
-            intent = {ctx: ctx, height: 6, width: 9, x: this.x, y: this.y};
-        }
+        const intent: IDrawIntent = {ctx: ctx, height: this.height, width: this.width, x: this.x, y: this.y};
         spriteSheet.bullet[this.orientation].draw(intent)
     }
 
@@ -45,6 +50,9 @@ class Bullet implements IGameObject {
     }
 
     setObjectPool(objectPool: ObjectPool) {
+    }
+
+    resolveCollision() {
     }
 }
 
