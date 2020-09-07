@@ -39,6 +39,7 @@ class Tank implements IGameObject {
     }
 
     resolveCollision(objectType: string) {
+        console.log(objectType);
         if (objectType == "wall-left") {
             this.stuck.left = true
         }
@@ -54,7 +55,7 @@ class Tank implements IGameObject {
     }
 
     update(dt) {
-        
+
         if (
             this.tankController.shouldMoveUp() ||
             this.tankController.shouldMoveDown() ||
@@ -83,26 +84,26 @@ class Tank implements IGameObject {
             this.x = this.stuck.left ? this.x -= 0 : this.x -= this.speed * dt;
         }
         if (this.tankController.shouldFire() && this.reload <= 0) {
-            
+
             let xModifier: number = 18
             let yModifier: number = 18
             if (this.orientation == Orientation.Up) {
-                yModifier = -10   
+                yModifier = -10
             } else if (this.orientation == Orientation.Down) {
-                yModifier = 43    
+                yModifier = 43
             } else if (this.orientation == Orientation.Left) {
-                xModifier = -11    
+                xModifier = -11
             } else if (this.orientation == Orientation.Right) {
-                xModifier = 43    
+                xModifier = 43
             }
-            
+
             let bullet = new Bullet(this.x + xModifier, this.y + yModifier, this.bulletSpeed,this.orientation)
             this.reload = 0.8
             this.objectPool && this.objectPool.addObject(bullet)
-            
-            
+
+
         }
-        
+
         this.reload -= dt
         this.stuck.up = false
         this.stuck.down = false
