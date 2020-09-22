@@ -12,20 +12,20 @@ class Bullet implements IGameObject {
     public y: number;
     public width: number;
     public height: number;
-    
+
     public readonly zIndex = 1;
-  
+
     constructor(x: number, y: number, speed: number, orientation: Orientation) {
         this.speed = speed;
         this.orientation = orientation;
         this.x = x;
         this.y = y;
         if (this.orientation == Orientation.Up || this.orientation === Orientation.Down) {
-            this.width = 6
-            this.height = 9
+            this.width = 6;
+            this.height = 9;
         } else {
-            this.width = 9
-            this.height = 6
+            this.width = 9;
+            this.height = 6;
         }
     }
 
@@ -36,23 +36,26 @@ class Bullet implements IGameObject {
 
     update(dt: number) {
         if (this.orientation == Orientation.Up) {
-            this.y -= dt * this.speed 
+            this.y -= dt * this.speed
         }
         if (this.orientation == Orientation.Down) {
-            this.y += dt * this.speed 
+            this.y += dt * this.speed
         }
         if (this.orientation == Orientation.Left) {
-            this.x -= dt * this.speed 
+            this.x -= dt * this.speed
         }
         if (this.orientation == Orientation.Right) {
-            this.x += dt * this.speed 
+            this.x += dt * this.speed
         }
     }
 
     setObjectPool(objectPool: ObjectPool) {
     }
 
-    resolveCollision() {
+    resolveCollision(objectType: string) {
+        if (objectType.startsWith("wall-") || objectType === 'Tank') {
+            this.destroyed = true;
+        }
     }
 }
 
