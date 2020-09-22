@@ -39,7 +39,7 @@ class Tank implements IGameObject {
     }
 
     resolveCollision(objectType: string) {
-        console.log(objectType);
+        
         if (objectType == "wall-left") {
             this.stuck.left = true
         }
