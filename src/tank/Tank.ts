@@ -10,6 +10,7 @@ class Tank implements IGameObject {
     public y: number;
     public width: number;
     public height: number;
+    private lives: number;
     private readonly level: number;
     private orientation: Orientation;
     private readonly tankController: TankController;
@@ -27,7 +28,7 @@ class Tank implements IGameObject {
     private objectPool: ObjectPool | null = null;
     reload: number = 0;
 
-    constructor(x: number, y: number, tankController: TankController, speed: number, width: number, height: number) {
+    constructor(x: number, y: number, tankController: TankController, speed: number, width: number, height: number, lives: number = 4) {
         this.tankController = tankController;
         this.speed = speed;
         this.orientation = Orientation.Up;
@@ -36,6 +37,8 @@ class Tank implements IGameObject {
         this.y = y;
         this.width = width;
         this.height = height;
+        this.lives = lives;
+
     }
 
     resolveCollision(objectType: string) {
@@ -52,6 +55,13 @@ class Tank implements IGameObject {
         if (objectType == "wall-down") {
             this.stuck.down = true
         }
+        if (objectType == "Bullet") {
+            this.lives--
+            if (this.lives < 1) {
+                this.destroyed = true;
+            }
+        }
+
     }
 
     update(dt) {
@@ -88,13 +98,13 @@ class Tank implements IGameObject {
             let xModifier: number = 18
             let yModifier: number = 18
             if (this.orientation == Orientation.Up) {
-                yModifier = -10
+                yModifier = -10 
             } else if (this.orientation == Orientation.Down) {
-                yModifier = 43
+                yModifier = 43 
             } else if (this.orientation == Orientation.Left) {
-                xModifier = -11
+                xModifier = -11 
             } else if (this.orientation == Orientation.Right) {
-                xModifier = 43
+                xModifier = 43 
             }
 
             let bullet = new Bullet(this.x + xModifier, this.y + yModifier, this.bulletSpeed,this.orientation)
