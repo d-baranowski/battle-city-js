@@ -38,8 +38,9 @@ async function init() {
         last = t;
 
         
-        collider.resolveCollisions();
+        
         objectPool.update(dt);
+        collider.resolveCollisions();
         renderer.render(objectPool.getObjects())
     
     }

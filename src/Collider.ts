@@ -23,21 +23,21 @@ class Collider {
         const objects = this.objectPool.getObjects();
         for (let i = 0; i < objects.length; i++) {
             let o1 = objects[i];
-            if (o1.x >= this.board.width - 1 - o1.width / 2) {
-                o1.x = this.board.width - (o1.width / 2) - 1
+            if (o1.x >= this.board.padding.left + this.board.width - o1.width ) {
+                o1.x = this.board.padding.left + this.board.width - o1.width
                 o1.resolveCollision("wall-right")
             }
-            if (o1.x <= o1.width / 2 - 1) {
+            if (o1.x <= this.board.padding.left) {
                 o1.resolveCollision("wall-left")
-                o1.x = o1.width / 2 - 1
+                o1.x = this.board.padding.left
             }
-            if (o1.y >= this.board.height - 1 - o1.height / 2) {
+            if (o1.y >= this.board.height + this.board.padding.top - o1.height) {
                 o1.resolveCollision("wall-down")
-                o1.y = this.board.height - (o1.height / 2) - 1
+                o1.y = this.board.height + this.board.padding.top - o1.height
             }
-            if (o1.y <= o1.height / 2 - 1) {
+            if (o1.y <= this.board.padding.top) {
                 o1.resolveCollision("wall-up")
-                o1.y = o1.height / 2 - 1
+                o1.y = this.board.padding.top
             }
 
             for (let j = 0; j < objects.length; j++) {

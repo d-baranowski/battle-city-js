@@ -4,10 +4,10 @@ class Board {
     width: number;
     height: number;
     padding = {
-        left: 20,
-        right: 80,
-        top: 20,
-        bottom: 20 
+        left: 100,
+        right: 100,
+        top: 100,
+        bottom: 100 
     }
 
     constructor(width: number, height: number) {
