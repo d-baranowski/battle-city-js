@@ -6,8 +6,9 @@ class ObjectPool {
     this.objects.push(object)
     object.setObjectPool(this)
   }
-  update(){
+  update(dt){
     this.objects = this.objects.filter(o => !o.destroyed)
+    this.objects.forEach(o => o.update(dt));
   }
   getObjects(): Array<IGameObject> {
     return this.objects

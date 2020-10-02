@@ -4,10 +4,8 @@ import Renderer from "./Renderer";
 import Tank from "./tank/Tank";
 import playerOneControls from "./controller/playerOneDefaultControls";
 import KeyControls from "./controller/KeyControls";
-import Bullet from "./tank/bullet/Bullet";
-import Orientation from "./Orientation";
 import ObjectPool from "./ObjectPool";
-import Collider from "./collider";
+import Collider from "./Collider";
 
 
 
@@ -26,9 +24,9 @@ async function init() {
 
     const collider = new Collider(board, objectPool);
 
-    const speed = 400;
+    const speed = 500;
     objectPool.addObject(new Tank(150, 400, controls, speed, 42, 42));
-    objectPool.addObject(new Tank(300, 400, controls, speed, 42, 42));
+   
 
     let dt = 0;
     let last = 0;
@@ -39,11 +37,11 @@ async function init() {
         dt = t - last;
         last = t;
 
+        
         collider.resolveCollisions();
-        objectPool.update();
-        objectPool.getObjects().forEach(o => o.update(dt));
+        objectPool.update(dt);
         renderer.render(objectPool.getObjects())
-
+    
     }
     requestAnimationFrame(loopy);
 }
