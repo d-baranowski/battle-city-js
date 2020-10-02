@@ -19,11 +19,6 @@ async function init() {
 
     const objectPool = new ObjectPool();
 
-    const randomBulletL = new Bullet(200, 330, 10, Orientation.Left);
-    const randomBulletR = new Bullet(230, 330, 10, Orientation.Right);
-    const randomBulletU = new Bullet(260, 330, 10, Orientation.Down);
-    const randomBulletD = new Bullet(280, 330, 10, Orientation.Up);
-
     const board = new Board(800, 640);
 
     const renderer = new Renderer(canvas, spriteSheet, board);
@@ -31,7 +26,7 @@ async function init() {
 
     const collider = new Collider(board, objectPool);
 
-    const speed = 100;
+    const speed = 400;
     objectPool.addObject(new Tank(150, 400, controls, speed, 42, 42));
     objectPool.addObject(new Tank(300, 400, controls, speed, 42, 42));
 

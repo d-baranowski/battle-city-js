@@ -13,7 +13,7 @@ class Collider {
     }
 
     static overlaps(o1: IGameObject, o2: IGameObject): boolean {
-        return !(o1.x + o1.width >= o2.x &&
+        return (o1.x + o1.width >= o2.x &&
             o1.x <= o2.x + o2.width &&
             o1.y + o1.height >= o2.y &&
             o1.y <= o2.y + o2.height);
@@ -44,7 +44,6 @@ class Collider {
                 let o2 = objects[j];
                 if (Collider.overlaps(o1, o2)) {
                     o1.resolveCollision(o2.constructor.name);
-                    o2.resolveCollision(o1.constructor.name);
                 }
             }
         }
@@ -55,3 +54,4 @@ class Collider {
 }
 
 export default Collider
+
