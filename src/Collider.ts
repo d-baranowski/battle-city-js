@@ -47,7 +47,7 @@ class Collider {
 
                 let o2 = objects[j];
                 if (Collider.overlaps(o1, o2)) {
-                    o1.resolveCollision(o2.constructor.name);
+                    o1.resolveCollision(o2.constructor.name, o2);
                 }
             }
         }

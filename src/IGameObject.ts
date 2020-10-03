@@ -6,13 +6,13 @@ interface IGameObject {
     y: number
     width: number
     height: number
-    
+
     destroyed: boolean
     readonly zIndex: number
     update(dt: number)
     render(spriteSheet: SpriteSheet, ctx: CanvasRenderingContext2D)
-    setObjectPool(objectPool: ObjectPool) 
-    resolveCollision(objectType: string)
+    setObjectPool(objectPool: ObjectPool)
+    resolveCollision(objectType: string, o2?: IGameObject)
 }
 
 export default IGameObject

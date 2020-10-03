@@ -1,5 +1,6 @@
 import getTankSpriteSheets, { ITankSpriteSheet } from "../tank/TankSpriteSheet";
 import {getBulletSpriteSheet, IBulletSpriteSheet} from "../tank/bullet/BulletSpriteSheet";
+import {getBrickSpriteSheet, IBrickSpriteSheet} from "../brick/BrickSpriteSheet";
 
 const sleep = async function (msec) {
     return new Promise(resolve => setTimeout(resolve, msec));
@@ -10,6 +11,7 @@ class SpriteSheet {
     private readonly image: HTMLImageElement;
     public yellowTank: ITankSpriteSheet[];
     public bullet: IBulletSpriteSheet;
+    public brick: IBrickSpriteSheet;
 
     constructor() {
         this.ready = false;
@@ -19,14 +21,14 @@ class SpriteSheet {
         };
         this.image.src = "public/sprites.png";
         this.yellowTank = getTankSpriteSheets(this, 'yellow');
-        this.bullet = getBulletSpriteSheet(this)
+        this.bullet = getBulletSpriteSheet(this);
+        this.brick = getBrickSpriteSheet(this);
     }
 
     async waitToBeReady(count = 0): Promise<boolean> {
         if (this.ready) {
             return Promise.resolve(true);
         }
-
 
         if (count < 20) {
             await sleep(100);
