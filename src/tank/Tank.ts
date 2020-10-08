@@ -41,6 +41,10 @@ class Tank implements IGameObject {
 
     }
 
+    isColliding() {
+        return true;
+    }
+
     resolveCollision(objectType: string, o2) {
         if (objectType == "wall-left") {
             this.stuck.left = true
@@ -62,13 +66,13 @@ class Tank implements IGameObject {
         }
         if (objectType == "Brick") {
             if (this.orientation === Orientation.Right && this.x < (o2.x)) {
-                this.x = o2.x - o2.width - 1
+                this.x = o2.x - o2.width 
             }
             else if (this.orientation === Orientation.Left && this.x + this.width > o2.x) {
                 this.x = o2.x + o2.width + 1
             }
             else if (this.orientation === Orientation.Down && this.y + this.height > o2.y) {
-                this.y = o2.y - o2.height - 1
+                this.y = o2.y - o2.height 
             }
             else if (this.orientation === Orientation.Up && this.y < o2.y + o2.height) {
                 this.y = o2.y + o2.height + 1;

@@ -51,10 +51,15 @@ class Bullet implements IGameObject {
 
     setObjectPool(objectPool: ObjectPool) {
     }
+    
+    isColliding() {
+        return true;
+    }
 
     resolveCollision(objectType: string) {
         this.speed = 0;
         this.destroyed = true;
+        console.log('I\'m destroyed')
     }
 }
 

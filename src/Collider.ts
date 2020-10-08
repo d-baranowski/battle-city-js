@@ -3,6 +3,13 @@ import ObjectPool from "./ObjectPool";
 import IGameObject from "./IGameObject";
 
 
+interface IPositionalElement {
+    x: number
+    y: number
+    width: number
+    height: number    
+}
+
 class Collider {
     private readonly board: Board;
     private readonly objectPool: ObjectPool;
@@ -12,7 +19,7 @@ class Collider {
         this.objectPool = objectPool;
     }
 
-    static overlaps(o1: IGameObject, o2: IGameObject): boolean {
+    static overlaps(o1: IPositionalElement, o2: IPositionalElement): boolean {
         return (o1.x + o1.width >= o2.x &&
             o1.x <= o2.x + o2.width &&
             o1.y + o1.height >= o2.y &&
@@ -46,9 +53,10 @@ class Collider {
                 }
 
                 let o2 = objects[j];
-                if (Collider.overlaps(o1, o2)) {
+                if (Collider.overlaps(o1, o2) && o1.isColliding(o2.constructor.name, o2) && o2.isColliding(o1.constructor.name, o1)) {
                     o1.resolveCollision(o2.constructor.name, o2);
                 }
+                
             }
         }
 
