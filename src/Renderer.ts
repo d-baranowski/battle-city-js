@@ -22,7 +22,6 @@ class Renderer {
         canvas.width = board.getCanvasWidth();
         this.ctx = canvas.getContext("2d");
         this.ctx.imageSmoothingEnabled = false;
-
     }
 
     async loaded() {
@@ -30,8 +29,8 @@ class Renderer {
     }
 
     render(objects) {
-        this.board.draw(this.ctx)
-        objects.forEach(obj => {
+        this.board.draw(this.ctx);
+        objects.sort((o, o2) => o2.zIndex - o.zIndex).forEach(obj => {
             obj.render(this.spriteSheet, this.ctx)
         })
     }
