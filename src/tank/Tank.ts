@@ -5,6 +5,7 @@ import ObjectPool from "../ObjectPool";
 import Bullet from "./bullet/Bullet";
 import Orientation from "../Orientation";
 import Collider from "../Collider";
+import Brick from "../brick/Brick";
 
 class Tank implements IGameObject {
     public x: number;
@@ -65,17 +66,17 @@ class Tank implements IGameObject {
             }
         }
         if (objectType == "Brick") {
-            if (this.orientation === Orientation.Right) {
-                this.stuck.right = true;
+            if ( this.orientation === Orientation.Left && o2.y - this.height < this.y && this.y < o2.y + o2.height && this.x < o2.x + o2.width ) {
+                this.x = o2.x + o2.width
             }
-            else if (this.orientation === Orientation.Left) {
-                this.stuck.left = true;
+            else if ( this.orientation === Orientation.Right && o2.y - this.height < this.y && this.y < o2.y + o2.height && this.x > o2.x - this.width ) {
+                this.x = o2.x - this.width
             }
-            else if (this.orientation === Orientation.Down) {
-                this.stuck.down = true;
+            else if ( this.orientation === Orientation.Down && this.y > (o2.y - this.height) && this.x < o2.x + o2.width && this.x > o2.x - this.width) {
+                this.y = o2.y - this.height
             }
-            else if (this.orientation === Orientation.Up) {
-                this.stuck.up = true
+            else if ( this.orientation === Orientation.Up && this.y < (o2.y + o2.height) && this.x < o2.x + o2.width && this.x > o2.x - this.width) {
+                this.y = o2.y + o2.height
             }
         }
     }
