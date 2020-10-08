@@ -1,20 +1,20 @@
 
-class Board { 
+class Board {
 
     width: number;
     height: number;
     padding = {
-        left: 20,
-        right: 80,
-        top: 20,
-        bottom: 20 
+        left: 30,
+        right: 60,
+        top: 30,
+        bottom: 30
     }
 
     constructor(width: number, height: number) {
         this.width = width;
-        this.height = height; 
+        this.height = height;
     }
-  
+
     draw(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = "#848284";
         ctx.fillRect(0, 0, this.getCanvasWidth(), this.getCanvasHeight());

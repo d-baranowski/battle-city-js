@@ -53,9 +53,8 @@ class Bullet implements IGameObject {
     }
 
     resolveCollision(objectType: string) {
-        if (objectType.startsWith("wall-") || objectType === 'Tank') {
-            this.destroyed = true;
-        }
+        this.speed = 0;
+        this.destroyed = true;
     }
 }
 
