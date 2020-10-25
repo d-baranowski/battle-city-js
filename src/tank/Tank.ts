@@ -5,6 +5,11 @@ import ObjectPool from "../ObjectPool";
 import Bullet from "./bullet/Bullet";
 import Orientation from "../Orientation";
 import Collider from "../Collider";
+import Brick from "../brick/Brick";
+
+const TANK_LEVEL_INFO = [
+    { width: 42, height: 42, initialSpeed: 150 }
+];
 
 class Tank implements IGameObject {
     public x: number;
@@ -29,15 +34,15 @@ class Tank implements IGameObject {
     private objectPool: ObjectPool | null = null;
     reload: number = 0;
 
-    constructor(x: number, y: number, tankController: TankController, speed: number, width: number, height: number, lives: number = 4) {
+    constructor(x: number, y: number, tankController: TankController, level: number, lives: number = 4) {
         this.tankController = tankController;
-        this.speed = speed;
+        this.speed = TANK_LEVEL_INFO[level].initialSpeed;
         this.orientation = Orientation.Up;
-        this.level = 0;
+        this.level = level;
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = TANK_LEVEL_INFO[level].width;
+        this.height = TANK_LEVEL_INFO[level].height;
         this.lives = lives;
     }
 
@@ -65,18 +70,22 @@ class Tank implements IGameObject {
             }
         }
         if (objectType == "Brick") {
-            if (this.orientation === Orientation.Right) {
-                this.stuck.right = true;
-            }
-            else if (this.orientation === Orientation.Left) {
-                this.stuck.left = true;
-            }
-            else if (this.orientation === Orientation.Down) {
-                this.stuck.down = true;
-            }
-            else if (this.orientation === Orientation.Up) {
-                this.stuck.up = true
-            }
+            o2.elements.filter(e => !e.destroyed).forEach((o2 => {
+               if (Collider.overlaps(this, o2)) {
+                   if ( this.orientation === Orientation.Left && o2.y - this.height < this.y && this.y < o2.y + o2.height && this.x < o2.x + o2.width ) {
+                       this.x = o2.x + o2.width
+                   }
+                   else if ( this.orientation === Orientation.Right && o2.y - this.height < this.y && this.y < o2.y + o2.height && this.x > o2.x - this.width ) {
+                       this.x = o2.x - this.width
+                   }
+                   else if ( this.orientation === Orientation.Down && this.y > (o2.y - this.height) && this.x < o2.x + o2.width && this.x > o2.x - this.width) {
+                       this.y = o2.y - this.height
+                   }
+                   else if ( this.orientation === Orientation.Up && this.y < (o2.y + o2.height) && this.x < o2.x + o2.width && this.x > o2.x - this.width) {
+                       this.y = o2.y + o2.height
+                   }
+               }
+            }))
         }
     }
 

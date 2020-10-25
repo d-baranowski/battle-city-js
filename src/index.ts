@@ -1,33 +1,47 @@
 import Board from "./Board";
 import SpriteSheet from "./sprite/SpriteSheet";
 import Renderer from "./Renderer";
-import Tank from "./tank/Tank";
 import playerOneControls from "./controller/playerOneDefaultControls";
 import KeyControls from "./controller/KeyControls";
 import ObjectPool from "./ObjectPool";
 import Collider from "./Collider";
-import Brick from "./brick/Brick";
+import MapEditor from "./map-editor/MapEditor";
+
+const map =
+`# # # # # #   #
+#              #
+#              #
+#     @        #
+#              #
+#              #
+#     #        #
+#    #  #      #
+#   #    #     #
+#   #     #    #
+#   #  #  #  # #
+#              #
+# # # # # # # #`;
+
+export const PLAYER_ONE_CONTROLS = new KeyControls(playerOneControls);
+export const PLAYER_INITIAL_LIVES = 3
 
 async function init() {
     const spriteSheet = new SpriteSheet();
     const canvas = document.getElementById("canvas");
-    const controls = new KeyControls(playerOneControls);
 
     const objectPool = new ObjectPool();
 
-    const board = new Board(800, 640);
+    const board = new Board(16, 13);
+
+    const mapEditor = new MapEditor(board);
+
+    mapEditor.parseMap(map);
+    mapEditor.populatePool(objectPool);
 
     const renderer = new Renderer(canvas, spriteSheet, board);
     await renderer.loaded();
 
     const collider = new Collider(board, objectPool);
-
-    const speed = 300;
-    objectPool.addObject(new Tank(120, 400, controls, speed, 42, 42));
-    objectPool.addObject(new Brick(180, 420));
-    objectPool.addObject(new Brick(180, 466));
-    objectPool.addObject(new Brick(180, 512));
-    objectPool.addObject(new Brick(180, 558));
 
 
     let dt = 0;
