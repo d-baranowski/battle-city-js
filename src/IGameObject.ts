@@ -13,6 +13,7 @@ interface IGameObject {
     render(spriteSheet: SpriteSheet, ctx: CanvasRenderingContext2D)
     setObjectPool(objectPool: ObjectPool)
     resolveCollision(objectType: string, o2?: IGameObject)
+    isColliding(objectType: string, o2?: IGameObject): boolean
 }
 
 export default IGameObject

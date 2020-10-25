@@ -3,6 +3,13 @@ import ObjectPool from "./ObjectPool";
 import IGameObject from "./IGameObject";
 
 
+interface IPositionalElement {
+    x: number
+    y: number
+    width: number
+    height: number
+}
+
 class Collider {
     private readonly board: Board;
     private readonly objectPool: ObjectPool;
@@ -12,7 +19,7 @@ class Collider {
         this.objectPool = objectPool;
     }
 
-    static overlaps(o1: IGameObject, o2: IGameObject): boolean {
+    static overlaps(o1: IPositionalElement, o2: IPositionalElement): boolean {
         return (o1.x + o1.width >= o2.x &&
             o1.x <= o2.x + o2.width &&
             o1.y + o1.height >= o2.y &&
@@ -20,23 +27,29 @@ class Collider {
     }
 
     resolveCollisions() {
-        const objects = this.objectPool.getObjects();
+        const objects = this.objectPool.getObjects().sort(o => {
+            if (o.constructor.name === "Brick") {
+                return 1
+            }
+            return -1
+        });
+
         for (let i = 0; i < objects.length; i++) {
             let o1 = objects[i];
             if (o1.x >= this.board.padding.left + this.board.width - o1.width ) {
-                o1.x = this.board.padding.left + this.board.width - o1.width
+                o1.x = this.board.padding.left + this.board.width - o1.width;
                 o1.resolveCollision("wall-right")
             }
             if (o1.x <= this.board.padding.left) {
-                o1.resolveCollision("wall-left")
+                o1.resolveCollision("wall-left");
                 o1.x = this.board.padding.left
             }
             if (o1.y >= this.board.height + this.board.padding.top - o1.height) {
-                o1.resolveCollision("wall-down")
+                o1.resolveCollision("wall-down");
                 o1.y = this.board.height + this.board.padding.top - o1.height
             }
             if (o1.y <= this.board.padding.top) {
-                o1.resolveCollision("wall-up")
+                o1.resolveCollision("wall-up");
                 o1.y = this.board.padding.top
             }
 
@@ -46,15 +59,12 @@ class Collider {
                 }
 
                 let o2 = objects[j];
-                if (Collider.overlaps(o1, o2)) {
+                if (Collider.overlaps(o1, o2) && o2.isColliding(o1.constructor.name, o1) && o1.isColliding(o2.constructor.name, o2)) {
                     o1.resolveCollision(o2.constructor.name, o2);
                 }
             }
         }
-
     }
-
-
 }
 
 export default Collider

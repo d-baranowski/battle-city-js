@@ -4,6 +4,7 @@ import IGameObject from "../IGameObject";
 import ObjectPool from "../ObjectPool";
 import Bullet from "./bullet/Bullet";
 import Orientation from "../Orientation";
+import Collider from "../Collider";
 
 class Tank implements IGameObject {
     public x: number;
@@ -20,7 +21,7 @@ class Tank implements IGameObject {
         down: false,
         left: false,
         right: false
-    }
+    };
     public destroyed = false;
     speed: number;
     bulletSpeed: number = 400;
@@ -38,7 +39,10 @@ class Tank implements IGameObject {
         this.width = width;
         this.height = height;
         this.lives = lives;
+    }
 
+    isColliding() {
+        return true;
     }
 
     resolveCollision(objectType: string, o2) {
@@ -61,17 +65,17 @@ class Tank implements IGameObject {
             }
         }
         if (objectType == "Brick") {
-            if (this.orientation === Orientation.Right && this.x < (o2.x)) {
-                this.x = o2.x - o2.width - 1
+            if (this.orientation === Orientation.Right) {
+                this.stuck.right = true;
             }
-            else if (this.orientation === Orientation.Left && this.x + this.width > o2.x) {
-                this.x = o2.x + o2.width + 1
+            else if (this.orientation === Orientation.Left) {
+                this.stuck.left = true;
             }
-            else if (this.orientation === Orientation.Down && this.y + this.height > o2.y) {
-                this.y = o2.y - o2.height - 1
+            else if (this.orientation === Orientation.Down) {
+                this.stuck.down = true;
             }
-            else if (this.orientation === Orientation.Up && this.y < o2.y + o2.height) {
-                this.y = o2.y + o2.height + 1;
+            else if (this.orientation === Orientation.Up) {
+                this.stuck.up = true
             }
         }
     }
