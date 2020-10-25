@@ -1,6 +1,5 @@
 import Board from "./Board";
 import ObjectPool from "./ObjectPool";
-import IGameObject from "./IGameObject";
 
 
 interface IPositionalElement {
@@ -62,6 +61,7 @@ class Collider {
                 if (Collider.overlaps(o1, o2) && o2.isColliding(o1.constructor.name, o1) && o1.isColliding(o2.constructor.name, o2)) {
                     o1.resolveCollision(o2.constructor.name, o2);
                 }
+
             }
         }
     }

@@ -14,6 +14,11 @@ interface IElement {
 
 const ELEMENT_WIDTH = 12;
 const ELEMENT_HEIGHT = 12;
+export const BRICK_DIMENSION = 48;
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+}
 
 class Brick implements IGameObject {
     public destroyed = false;
@@ -28,13 +33,13 @@ class Brick implements IGameObject {
     constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.width = 48;
-        this.height = 48;
+        this.width = BRICK_DIMENSION;
+        this.height = BRICK_DIMENSION;
         this.elements = [];
 
         let index = 0;
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 4; j++) {
+        for (let i=0; i < 4; i++) {
+            for  (let j=0; j < 4; j++) {
                 this.elements[index] = {
                     x: this.x + i * 12,
                     y: this.y + j * 12,
@@ -45,15 +50,15 @@ class Brick implements IGameObject {
                 index = index + 1
             }
         }
-        this.elements[2].destroyed = true;
-        this.elements[7].destroyed = true
+        this.elements[getRandomInt(16)].destroyed = true;
+        this.elements[getRandomInt(16)].destroyed = true
     }
 
     render(spriteSheet: SpriteSheet, ctx: CanvasRenderingContext2D) {
         const intent: IDrawIntent = {ctx: ctx, height: this.height, width: this.width, x: this.x, y: this.y};
         spriteSheet.brick.brick.draw(intent);
 
-        this.elements.forEach((element) => {
+        this.elements.forEach((element) =>{
             if (element.destroyed) {
                 ctx.fillStyle = '#000000';
                 ctx.fillRect(element.x, element.y, ELEMENT_WIDTH, ELEMENT_HEIGHT)

@@ -1,6 +1,6 @@
+import {BRICK_DIMENSION} from "./brick/Brick";
 
 class Board {
-
     width: number;
     height: number;
     padding = {
@@ -8,11 +8,15 @@ class Board {
         right: 60,
         top: 30,
         bottom: 30
-    }
+    };
+    public readonly gridWidth: number;
+    public readonly gridHeight: number;
 
-    constructor(width: number, height: number) {
-        this.width = width;
-        this.height = height;
+    constructor(gridWidth: number, gridHeight: number) {
+        this.gridWidth = gridWidth;
+        this.gridHeight = gridHeight;
+        this.width = gridWidth * BRICK_DIMENSION;
+        this.height = gridHeight * BRICK_DIMENSION;
     }
 
     draw(ctx: CanvasRenderingContext2D) {
