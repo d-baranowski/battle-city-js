@@ -1,6 +1,6 @@
 import TankController from "../controller/TankController";
 import SpriteSheet from "../sprite/SpriteSheet";
-import IGameObject from "../IGameObject";
+import {IDynamicGameObject} from "../IGameObject";
 import ObjectPool from "../ObjectPool";
 import Bullet from "./bullet/Bullet";
 import Orientation from "../Orientation";
@@ -8,20 +8,22 @@ import Collider from "../Collider";
 import Brick from "../brick/Brick";
 
 const TANK_LEVEL_INFO = [
-    { width: 42, height: 42, initialSpeed: 150 }
+    {width: 42, height: 42, initialSpeed: 75}
 ];
 
-class Tank implements IGameObject {
+class Tank implements IDynamicGameObject {
     public x: number;
+    public ox: number;
     public y: number;
+    public oy: number;
     public width: number;
     public height: number;
     private lives: number;
     private readonly level: number;
-    private orientation: Orientation;
-    private readonly tankController: TankController;
+    public orientation: Orientation;
+    private tankController: TankController | undefined;
     private stateIndex = 0;
-    private stuck = {
+    public readonly stuck = {
         up: false,
         down: false,
         left: false,
@@ -34,16 +36,21 @@ class Tank implements IGameObject {
     private objectPool: ObjectPool | null = null;
     reload: number = 0;
 
-    constructor(x: number, y: number, tankController: TankController, level: number, lives: number = 4) {
-        this.tankController = tankController;
+    constructor(x: number, y: number, level: number, lives: number = 4) {
         this.speed = TANK_LEVEL_INFO[level].initialSpeed;
         this.orientation = Orientation.Up;
         this.level = level;
         this.x = x;
+        this.ox = x;
         this.y = y;
+        this.oy = y;
         this.width = TANK_LEVEL_INFO[level].width;
         this.height = TANK_LEVEL_INFO[level].height;
         this.lives = lives;
+    }
+
+    setController(tankController: TankController) {
+        this.tankController = tankController;
     }
 
     isColliding() {
@@ -52,16 +59,20 @@ class Tank implements IGameObject {
 
     resolveCollision(objectType: string, o2) {
         if (objectType == "wall-left") {
-            this.stuck.left = true
+            this.stuck.left = true;
+            this.tankController && this.tankController.onCollision(objectType, o2);
         }
         if (objectType == "wall-right") {
-            this.stuck.right = true
+            this.stuck.right = true;
+            this.tankController && this.tankController.onCollision(objectType, o2);
         }
         if (objectType == "wall-up") {
-            this.stuck.up = true
+            this.stuck.up = true;
+            this.tankController && this.tankController.onCollision(objectType, o2);
         }
         if (objectType == "wall-down") {
-            this.stuck.down = true
+            this.stuck.down = true;
+            this.tankController && this.tankController.onCollision(objectType, o2);
         }
         if (objectType == "Bullet") {
             this.lives--;
@@ -71,53 +82,54 @@ class Tank implements IGameObject {
         }
         if (objectType == "Brick") {
             o2.elements.filter(e => !e.destroyed).forEach((o2 => {
-               if (Collider.overlaps(this, o2)) {
-                   if ( this.orientation === Orientation.Left && o2.y - this.height < this.y && this.y < o2.y + o2.height && this.x < o2.x + o2.width ) {
-                       this.x = o2.x + o2.width
-                   }
-                   else if ( this.orientation === Orientation.Right && o2.y - this.height < this.y && this.y < o2.y + o2.height && this.x > o2.x - this.width ) {
-                       this.x = o2.x - this.width
-                   }
-                   else if ( this.orientation === Orientation.Down && this.y > (o2.y - this.height) && this.x < o2.x + o2.width && this.x > o2.x - this.width) {
-                       this.y = o2.y - this.height
-                   }
-                   else if ( this.orientation === Orientation.Up && this.y < (o2.y + o2.height) && this.x < o2.x + o2.width && this.x > o2.x - this.width) {
-                       this.y = o2.y + o2.height
-                   }
-               }
+                const callController = Collider.resolveCollision(this, o2);
+
+                if (callController) {
+                    this.tankController && this.tankController.onCollision(objectType, o2);
+                }
             }))
+        }
+        if (objectType == "Tank") {
+            const callController = Collider.resolveCollision(this, o2);
+
+            if (callController) {
+                this.tankController && this.tankController.onCollision(objectType, o2);
+            }
         }
     }
 
     update(dt) {
+        this.ox = this.x;
+        this.oy = this.y;
         if (
-            this.tankController.shouldMoveUp() ||
-            this.tankController.shouldMoveDown() ||
-            this.tankController.shouldMoveRight() ||
-            this.tankController.shouldMoveLeft()
+            this.tankController &&
+            (this.tankController.shouldMoveUp() ||
+                this.tankController.shouldMoveDown() ||
+                this.tankController.shouldMoveRight() ||
+                this.tankController.shouldMoveLeft())
         ) {
             this.stateIndex = (this.stateIndex + 1) % 20
         }
 
-        if (this.tankController.shouldMoveUp()) {
+        if (this.tankController && this.tankController.shouldMoveUp()) {
             this.orientation = Orientation.Up;
             this.y = this.stuck.up ? this.y -= 0 : this.y -= this.speed * dt;
         }
 
-        if (this.tankController.shouldMoveDown()) {
+        if (this.tankController && this.tankController.shouldMoveDown()) {
             this.orientation = Orientation.Down;
             this.y = this.stuck.down ? this.y -= 0 : this.y += this.speed * dt;
         }
 
-        if (this.tankController.shouldMoveRight()) {
+        if (this.tankController && this.tankController.shouldMoveRight()) {
             this.orientation = Orientation.Right;
             this.x = this.stuck.right ? this.x -= 0 : this.x += this.speed * dt;
         }
-        if (this.tankController.shouldMoveLeft()) {
+        if (this.tankController && this.tankController.shouldMoveLeft()) {
             this.orientation = Orientation.Left;
             this.x = this.stuck.left ? this.x -= 0 : this.x -= this.speed * dt;
         }
-        if (this.tankController.shouldFire() && this.reload <= 0) {
+        if (this.tankController && this.tankController.shouldFire() && this.reload <= 0) {
             let xModifier: number = 18;
             let yModifier: number = 18;
             if (this.orientation == Orientation.Up) {
@@ -130,7 +142,7 @@ class Tank implements IGameObject {
                 xModifier = 43
             }
 
-            let bullet = new Bullet(this.x + xModifier, this.y + yModifier, this.bulletSpeed,this.orientation);
+            let bullet = new Bullet(this.x + xModifier, this.y + yModifier, this.bulletSpeed, this.orientation);
             this.reload = 0.8;
             this.objectPool && this.objectPool.addObject(bullet)
         }
