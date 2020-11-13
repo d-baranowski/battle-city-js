@@ -11,17 +11,17 @@ import AiPool from "./ai/AiPool";
 
 const map =
 `# #     # #   #
-#     0        #
+# 0    0   0 0 #
 #              #
 #     @        #
-#              #
+# 0      0     #
 #              #
 # # # #  # # # #
 #    #  #      #
 #   #    #     #
 #   #     #    #
 #   #  #  #  # #
-#              #
+#      0   0   #
 # # # # # # # #`;
 
 export const PLAYER_ONE_CONTROLS = new KeyControls(playerOneControls);
@@ -61,8 +61,8 @@ async function init() {
 
         objectPool.update(dt);
         collider.resolveCollisions();
+        renderer.render(objectPool.getObjects());
         aiPool.update(dt);
-        renderer.render(objectPool.getObjects())
     }
     requestAnimationFrame(loopy);
 }

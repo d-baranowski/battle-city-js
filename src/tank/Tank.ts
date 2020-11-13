@@ -68,12 +68,12 @@ class Tank implements IGameObject {
         if (objectType == "wall-down") {
             this.stuck.down = true
         }
-        if (objectType == "Bullet") {
-            this.lives--;
-            if (this.lives < 1) {
-                this.destroyed = true;
-            }
-        }
+        // if (objectType == "Bullet") {
+        //     this.lives--;
+        //     if (this.lives < 1) {
+        //         this.destroyed = true;
+        //     }
+        // }
         if (objectType == "Brick") {
             o2.elements.filter(e => !e.destroyed).forEach((o2 => {
                if (Collider.overlaps(this, o2)) {
