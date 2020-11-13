@@ -50,6 +50,7 @@ class EasyAIController implements TankController, IAiController {
     private readonly tank: Tank;
     private state: State = State.Seek;
     private sleep = 0;
+    private timeLeftToMove = 0;
 
     constructor(tank: Tank) {
         this.tank = tank;
@@ -103,14 +104,21 @@ class EasyAIController implements TankController, IAiController {
             return;
         }
 
+        if (this.timeLeftToMove <= 0) {
+            this.state = State.Seek;
+        }
+
         if (this.state === State.Seek) {
             this.state = getRandomMovementState(this.tank);
+            this.timeLeftToMove = (Math.floor(Math.random() * 10) + 1) * 0.2;
         }
+
         else if (this.state === State.Left
             || this.state === State.Right
             || this.state === State.Up
             || this.state === State.Down
             || this.state === State.Shoot) {
+            this.timeLeftToMove -= timeSinceLastUpdate
         }
     }
 }

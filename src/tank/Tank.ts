@@ -8,7 +8,7 @@ import Collider from "../Collider";
 import Brick from "../brick/Brick";
 
 const TANK_LEVEL_INFO = [
-    { width: 42, height: 42, initialSpeed: 150 }
+    { width: 42, height: 42, initialSpeed: 75 }
 ];
 
 class Tank implements IGameObject {
