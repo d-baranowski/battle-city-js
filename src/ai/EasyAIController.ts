@@ -20,10 +20,6 @@ const movementPool = [
     State.Up,
     State.Left,
     State.Left,
-    State.Left,
-    State.Left,
-    State.Right,
-    State.Right,
     State.Right,
     State.Right,
 ];
@@ -95,7 +91,7 @@ class EasyAIController implements TankController, IAiController {
     }
 
     isDestroyed(): boolean {
-        return false;
+        return this.tank.destroyed;
     }
 
     update(timeSinceLastUpdate: number, totalTimeElapsed: number) {
@@ -110,7 +106,7 @@ class EasyAIController implements TankController, IAiController {
 
         if (this.state === State.Seek) {
             this.state = getRandomMovementState(this.tank);
-            this.timeLeftToMove = (Math.floor(Math.random() * 10) + 1) * 0.2;
+            this.timeLeftToMove = (Math.floor(Math.random() * 20) + 1) * 0.2;
         }
 
         else if (this.state === State.Left

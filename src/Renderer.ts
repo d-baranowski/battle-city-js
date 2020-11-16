@@ -11,7 +11,7 @@ export interface IDrawIntent {
     ctx: CanvasRenderingContext2D
 }
 class Renderer {
-    private readonly ctx: CanvasRenderingContext2D;
+    public readonly ctx: CanvasRenderingContext2D;
     private readonly spriteSheet: SpriteSheet;
     private readonly board: Board;
 
