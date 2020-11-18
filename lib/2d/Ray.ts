@@ -18,6 +18,14 @@ class Ray {
     clone() {
         return new Ray(this.start.clone(), this.direction.clone())
     }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+        ctx.moveTo(this.start.x, this.start.y);
+        let end = this.direction.clone().add(this.start);
+        ctx.lineTo(end.x, end.y);
+        ctx.stroke();
+    }
 }
 
 export default Ray

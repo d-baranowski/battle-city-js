@@ -73,10 +73,7 @@ async function init() {
         collider.resolveCollisions();
         renderer.render(objectPool.getObjects());
         renderer.ctx.clearRect(0, 0, 1000, 1000);
-        renderer.ctx.beginPath();
-        renderer.ctx.moveTo(ray.start.x, ray.start.y);
-        renderer.ctx.lineTo(mousePos.x, mousePos.y);
-        renderer.ctx.stroke();
+        ray.draw(renderer.ctx);
 
 
         const collisionInfo = RayVsRect(ray, rec);
@@ -85,8 +82,7 @@ async function init() {
         } else {
             renderer.ctx.fillStyle = "#000000";
         }
-        renderer.ctx.fillRect(rec.position.x, rec.position.y, rec.width, rec.height);
-
+        rec.draw(renderer.ctx);
         renderer.ctx.fillStyle = "#000000";
         collisionInfo.contactPoint && renderer.ctx.fillRect(collisionInfo.contactPoint.x, collisionInfo.contactPoint.y, 10, 10);
         collisionInfo.contactNormal && console.log(collisionInfo.contactNormal.toString());

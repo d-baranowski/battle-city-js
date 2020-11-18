@@ -15,6 +15,10 @@ class Rectangle {
     toString() {
         return `{ position: ${this.position.toString()}, width: ${this.width}, height: ${this.height} }`
     }
+
+    draw(ctx: CanvasRenderingContext2D) {
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    }
 }
 
 export default Rectangle;
