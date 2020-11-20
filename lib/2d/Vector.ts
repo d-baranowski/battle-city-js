@@ -227,6 +227,12 @@ class Vector extends Point {
         return this
     }
 
+    absolute() {
+        this.x = Math.abs(this.x);
+        this.y = Math.abs(this.y);
+        return this;
+    }
+
     /**
      * Returns a copy of this vector
      */

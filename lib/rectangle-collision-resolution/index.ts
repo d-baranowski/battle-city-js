@@ -2,6 +2,7 @@ import Point from "../2d/Point";
 import Rectangle from "../2d/Rectangle";
 import Ray from "../2d/Ray";
 import Vector from "../2d/Vector";
+import DynamicRectangle from "../2d/DynamicRectangle";
 
 // This will only work for axis aligned rectangles aka not rotated rectangles
 
@@ -32,14 +33,14 @@ function getFarCollisionTime(ray: Ray, rectangle: Rectangle, axis: "x" | "y"): n
     return (rectangle.position[axis] + rectangle.width - ray.start[axis]) / ray.direction[axis]
 }
 
-interface RayVsRectResult {
+interface CollisionInfo {
     collision: boolean
     contactNormal?: Vector
     contactPoint?: Point
     t?: number
 }
 
-export function RayVsRect(oray: Ray, rectangle: Rectangle): RayVsRectResult {
+export function RayVsRect(oray: Ray, rectangle: Rectangle): CollisionInfo {
     let ray = oray.clone();
 
     const tNear = {
@@ -92,4 +93,29 @@ export function RayVsRect(oray: Ray, rectangle: Rectangle): RayVsRectResult {
     }
 
     return { collision: true, contactNormal: contactNormal, contactPoint, t: tHitNear }
+}
+
+export function DynamicRectangleVsRectangle(input: DynamicRectangle, target: Rectangle, elapsedTime: number): CollisionInfo {
+    if (input.velocity.magnitude() == 0) {
+        return { collision: false };
+    }
+
+    const halfSize = new Vector(input.width, input.height).divideByScalar(2);
+    const expandedPosition = target.position.clone().subtract(halfSize);
+    const expandedTarget = new Rectangle(
+        expandedPosition.x,
+        expandedPosition.y,
+        input.width + target.width,
+        input.height + target.height
+    );
+
+    const sourceRay = new Ray(input.center(), input.velocity.clone().multiplyByScalar(elapsedTime));
+    const collisionInfo = RayVsRect(sourceRay, expandedTarget);
+    if (collisionInfo.collision) {
+        if (collisionInfo.t && collisionInfo.t <= 1) {
+            return collisionInfo
+        }
+    }
+
+    return { collision: false }
 }
