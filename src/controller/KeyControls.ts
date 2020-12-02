@@ -1,3 +1,6 @@
+import TankController from "./TankController";
+import IGameObject from "../IGameObject";
+
 export interface KeyControlsBinding {
     left: string
     right: string
@@ -6,7 +9,7 @@ export interface KeyControlsBinding {
     fire: string
 }
 
-class KeyControls {
+class KeyControls implements TankController {
     keysPressed: {};
     private readonly keyBinding: KeyControlsBinding;
 
@@ -29,6 +32,8 @@ class KeyControls {
             this.keysPressed[e.code] = false;
         }, false);
     }
+
+    onCollision(objectType: string, obj: IGameObject) {}
 
     reset() {
         this.keysPressed[this.keyBinding.right] = false;

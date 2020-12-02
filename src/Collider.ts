@@ -1,5 +1,7 @@
 import Board from "./Board";
 import ObjectPool from "./ObjectPool";
+import Orientation from "./Orientation";
+import IGameObject, {IDynamicGameObject} from "./IGameObject";
 
 
 interface IPositionalElement {
@@ -19,10 +21,19 @@ class Collider {
     }
 
     static overlaps(o1: IPositionalElement, o2: IPositionalElement): boolean {
-        return (o1.x + o1.width >= o2.x &&
-            o1.x <= o2.x + o2.width &&
-            o1.y + o1.height >= o2.y &&
-            o1.y <= o2.y + o2.height);
+        return (o1.x + o1.width > o2.x &&
+            o1.x < o2.x + o2.width &&
+            o1.y + o1.height > o2.y &&
+            o1.y < o2.y + o2.height);
+    }
+
+    static resolveCollision(o1: IDynamicGameObject, o2:IGameObject): boolean {
+        if (Collider.overlaps(o1, o2)) {
+            o1.x = o1.ox;
+            o1.y = o1.oy;
+        }
+
+        return false;
     }
 
     resolveCollisions() {

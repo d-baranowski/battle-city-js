@@ -3,9 +3,12 @@ import ObjectPool from "../ObjectPool";
 import Tank from "../tank/Tank";
 import {PLAYER_INITIAL_LIVES, PLAYER_ONE_CONTROLS} from "../index";
 import Brick, {BRICK_DIMENSION} from "../brick/Brick";
+import AiPool from "../ai/AiPool";
+import EasyAIController from "../ai/EasyAIController";
 
 
 const PLAYER_1_SYMBOL = "@";
+const ENEMY_SYMBOL = "0";
 const BRICK_SYMBOL = "#";
 
 class MapEditor {
@@ -47,14 +50,27 @@ class MapEditor {
         }
     }
 
-    public populatePool(pool: ObjectPool) {
+    private tempSpawnTank(x, y, objectPool: ObjectPool, aiPool: AiPool) {
+        const tank = new Tank( x, y, 0, 1);
+        const controller = new EasyAIController(tank);
+        tank.setController(controller);
+        objectPool.addObject(tank);
+        aiPool.addObject(controller);
+    }
+
+    public populatePool(objectPool: ObjectPool, aiPool: AiPool) {
         this.forEach((symbol, i, j) => {
             if (symbol === PLAYER_1_SYMBOL) {
-                pool.addObject(new Tank( i * BRICK_DIMENSION + this.board.padding.left, j * BRICK_DIMENSION + this.board.padding.top, PLAYER_ONE_CONTROLS, 0, PLAYER_INITIAL_LIVES));
+                const tank = new Tank( i * BRICK_DIMENSION + this.board.padding.left, j * BRICK_DIMENSION + this.board.padding.top, 0, PLAYER_INITIAL_LIVES)
+                tank.setController(PLAYER_ONE_CONTROLS);
+                objectPool.addObject(tank);
+
             } else if (symbol == BRICK_SYMBOL) {
-                pool.addObject(new Brick(i * BRICK_DIMENSION + this.board.padding.left, j * BRICK_DIMENSION + this.board.padding.top));
+                objectPool.addObject(new Brick(i * BRICK_DIMENSION + this.board.padding.left, j * BRICK_DIMENSION + this.board.padding.top));
+            } if (symbol === ENEMY_SYMBOL) {
+                this.tempSpawnTank(i * BRICK_DIMENSION + this.board.padding.left, j * BRICK_DIMENSION + this.board.padding.top, objectPool, aiPool)
             }
-        })
+        });
     }
 }
 
